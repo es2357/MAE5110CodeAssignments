@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import timeit
 
 from models import pendulum as model
+from integrators import explicit_euler as integrator
+# from integrators import rk4 as integrator
 
 # Basic simulation of the pendulum
 
@@ -24,17 +27,45 @@ time_traj = np.arange(n_timesteps) * timestep
 state_traj = np.zeros((2, n_timesteps))
 state_traj[:, 0] = initial_state
 
-# simulation loop
+
+start_time = timeit.default_timer()
+
 for step, t in enumerate(time_traj[:-1]):
-    state_traj[:, step + 1] = state_traj[:, step] + timestep * model.dynamics(
-        t, state_traj[:, step], params
+    state_traj[:, step + 1] = integrator.step(
+        model.dynamics,
+        t,
+        state_traj[:, step],
+        timestep,
+        params,
     )
+
+elapsed_time = timeit.default_timer() - start_time
+
+print(f"Integrator runtime: {elapsed_time:.6f} seconds")
+
+# simulation loop -- explicit euler method
+
+# for step, t in enumerate(time_traj[:-1]):
+#     state_traj[:, step + 1] = state_traj[:, step] + timestep * model.dynamics(
+#         t, state_traj[:, step], params
+#     )
+
+# simulation loop -- with integrator
+for step, t in enumerate(time_traj[:-1]):
+    state_traj[:, step + 1] = integrator.step(
+        model.dynamics,
+        t,
+        state_traj[:, step],
+        timestep,
+        params,
+    )
+
 
 # sanity check the energies: since there is no actuation, and no damping, total energy should stay
 # constant. If we turn on the damping coefficient, it should slowly bleed out energy until it comes to
 # a stand-still.
 
-potential_energy, kinetic_energy = model.calculate_energy(state_traj, params)
+kinetic_energy, potential_energy = model.calculate_energy(state_traj, params)
 
 plt.figure()
 plt.plot(time_traj, potential_energy, label="Potential energy")
