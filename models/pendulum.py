@@ -1,5 +1,6 @@
 import numpy as np
 
+# PENDULUM MODEL
 
 def dynamics(t, state, params):
     # params : dictionary containing the parameters of the pendulum
@@ -11,9 +12,12 @@ def dynamics(t, state, params):
     angle = state[0]
     angular_velocity = state[1]
 
-    # changed equations to make PE = 0 and theta = 0 at the bottom of the swing
+    # can change equations to make PE = 0 and theta = 0 at
+    # the bottom of the swing: negate angular_acceleration
+    # and use (1 - cos(angle))
+
     angular_acceleration = (
-        - mass * gravity * length * np.sin(angle)
+        mass * gravity * length * np.sin(angle)
         - damping_coeff * angular_velocity  # <-- DAMPING TERM
     ) / (mass * length**2)
 
@@ -41,5 +45,6 @@ def calculate_energy(state, params):
     angular_velocity = state[1]
 
     kinetic_energy = 0.5 * mass * (length * angular_velocity) ** 2
-    potential_energy = mass * gravity * length * (1 - np.cos(angle))
+    # potential_energy = mass * gravity * length * (1 - np.cos(angle))
+    potential_energy = mass * gravity * length * (np.cos(angle))
     return kinetic_energy, potential_energy
