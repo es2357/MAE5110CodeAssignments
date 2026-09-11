@@ -14,6 +14,7 @@ params = model.generate_params()
 alpha = np.pi / params["num_spokes"]
 lower_angle, upper_angle = model.contact_angles(params)
 
+
 # ------------------------------------------------------------
 #               SANITY CHECK: test downhill impact
 # ------------------------------------------------------------
@@ -83,6 +84,26 @@ def find_impact_time(t, state, timestep, params, direction):
 # ------------------------------------------------------------
 
 
+MAX_IMPACTS_PER_STEP = 100
+
+
+def should_settle(state, params):
+    """Check whether the wheel has too little energy to roll over upright."""
+
+    theta, theta_dot = state
+
+    gravity = params["gravity"]
+    length = params["length"]
+
+    # Speed needed to reach theta = 0 from the current contact angle
+    required_speed_squared = (
+        2 * gravity / length
+        * (1 - np.cos(theta))
+    )
+
+    return theta_dot**2 < required_speed_squared
+
+
 def step(t, state, timestep, params):
     """Take one timestep, handling all impacts that occur during the step."""
 
@@ -91,6 +112,11 @@ def step(t, state, timestep, params):
     remaining_time = timestep
 
     impacts = []
+
+    if len(impacts) > MAX_IMPACTS_PER_STEP:
+        raise RuntimeError(
+            "Too many impacts in one timestep."
+        )
 
     while remaining_time > 0:
 
@@ -107,7 +133,7 @@ def step(t, state, timestep, params):
 
         # if no impact in the remaining time
         if direction == 0:
-            return trial_state, impacts
+            return trial_state, impacts, False
 
         # find impact time and angle during the remaining time
         impact_dt, impact_angle = find_impact_time(
@@ -143,13 +169,21 @@ def step(t, state, timestep, params):
             "state_plus": state_plus.copy(),
         })
 
-        # start again
+        # Check whether the wheel has enough energy to
+        # continue rolling over upright
+        if should_settle(state_plus, params):
+
+            state_plus[1] = 0.0
+
+            return state_plus, impacts, True
+
+        # Otherwise continue with the remaining timestep
         current_state = state_plus
 
         current_time += impact_dt
         remaining_time -= impact_dt
 
-    return current_state, impacts
+    return current_state, impacts, False
 
 
 # ------------------------------------------------------------
@@ -199,7 +233,6 @@ print("----------------------------------")
 #                           sim
 # ------------------------------------------------------------
 
-
 # Start immediately after a downhill impact
 initial_state = np.array([lower_angle, 1.5])
 
@@ -218,7 +251,7 @@ start_time = timeit.default_timer()
 
 for k, t in enumerate(time_traj[:-1]):
 
-    next_state, impacts = step(
+    next_state, impacts, settled = step(
         t,
         state_traj[:, k],
         timestep,
@@ -229,6 +262,12 @@ for k, t in enumerate(time_traj[:-1]):
 
     # Add every impact that occurred during this timestep
     impact_log.extend(impacts)
+
+    if settled:
+        # Hold the wheel at rest for the rest of the simulation
+        state_traj[:, k + 1:] = next_state[:, None]
+        print(f"Wheel settled at approximately t = {t:.3f} s")
+        break
 
 elapsed_time = timeit.default_timer() - start_time
 
