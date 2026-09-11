@@ -16,7 +16,7 @@ params = {
 }
 
 
-# some set-up
+# set-up
 initial_state = np.array([np.pi / 4, 0.0])
 
 timestep = 1e-5
