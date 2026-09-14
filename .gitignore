@@ -6,3 +6,6 @@ __pycache__/
 .pytest_cache/
 uv.lock
 assignments_tex/
+
+# Generated simulation data
+*.csv
