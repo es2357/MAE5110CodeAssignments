@@ -1,6 +1,9 @@
-import numpy as np
 
-# BOUNCING BALL MODEL
+"""
+BOUNCING BALL MODEL (assignment 0)
+"""
+
+import numpy as np
 
 def dynamics(t, state, params):
     """Return the state derivative while the ball is in flight."""

@@ -40,7 +40,7 @@ In this class, we will use [uv](https://docs.astral.sh/uv/) as our environment m
 If you're not familiar with environment managers, or why they are important, see [here](https://xkcd.com/1987/), and in all seriousness, read the _Why_ and _How_ sections [here](https://realpython.com/python-virtual-environments-a-primer/?utm_source=chatgpt.com#why-do-you-need-virtual-environments).
 
 ## Pendulum simulation
-_Before_ running the code: read through the pendulum simulation in `assignment_0.py`, and predict what you expect to happen. Then run it.
+_Before_ running the code: read through the pendulum simulation in `assignment_0/assignment_0.py`, and predict what you expect to happen. Then run it.
 
 Set up the [Python debugger in VS Code](https://code.visualstudio.com/docs/python/debugging), and step through the code, using the debugger to follow the codeflow into different parts of the code. Yes, this codebase is tiny and you don't really need to do this to understand where things are implemented; in more complex code-bases (e.g. the RL codebase you will work with in this class), following through the codeflow once with the debugger is a good habit to have.
 
@@ -48,7 +48,7 @@ Sketch the pendulum, including coordinate system, and use it to verify your intu
 
 ## Create a module for numerical integrators.
 
-In `assignment_0.py`, the integration step is currently written out explicitly in the script's simulation loop with a simple Explicit Euler method. This integration method works, but is very sensitive and typically requires a small timestep. Run a sweep and find the largest timestep where the integration stays stable. Think about how you would do this. _Before_ you run the code, predict what you expect to see. Get into the habit of predicting what you expect to happen instead of just reacting to bugs when you see them (there is strong evidence for why this is powerful in the theory of Reinforcement Learning).
+In `assignment_0/assignment_0.py`, the integration step is currently written out explicitly in the script's simulation loop with a simple Explicit Euler method. This integration method works, but is very sensitive and typically requires a small timestep. Run a sweep and find the largest timestep where the integration stays stable. Think about how you would do this. _Before_ you run the code, predict what you expect to see. Get into the habit of predicting what you expect to happen instead of just reacting to bugs when you see them (there is strong evidence for why this is powerful in the theory of Reinforcement Learning).
 
 Next, look at how the pendulum model is encapsulated in the `models` module, and encapsulate the Euler integrator into a similar module.
 You should be able to import it as `from integrators import explicit_euler as integrator`.

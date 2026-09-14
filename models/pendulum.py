@@ -1,6 +1,11 @@
+
+"""
+PENDULUM MODEL (assignment 0)
+"""
+
+
 import numpy as np
 
-# PENDULUM MODEL
 
 def dynamics(t, state, params):
     # params : dictionary containing the parameters of the pendulum
