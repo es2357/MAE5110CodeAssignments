@@ -14,7 +14,7 @@ from matplotlib.patches import Patch
 
 DATA_DIR = Path(__file__).resolve().parent / "assignment_1_data"
 # Change this filename to choose a different simulation result by default
-DEFAULT_CSV = DATA_DIR / "rimless_wheel_roa_gamma_0.800.csv"
+DEFAULT_CSV = DATA_DIR / "rimless_wheel_roa_gamma_0.390_N_8.csv"
 
 # Each CSV classification maps to (legend text, hex color)
 CLASSIFICATIONS = {

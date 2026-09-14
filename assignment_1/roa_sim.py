@@ -174,17 +174,19 @@ def main():
     """Run the initial-condition grid and save its classifications to CSV"""
     params = model.generate_params()
     gamma = params["slope_angle"]
-    alpha = np.pi / params["num_spokes"]
+    spokes = params["num_spokes"]
+    alpha = np.pi / spokes
     lower_angle, upper_angle = model.contact_angles(params)
 
     print(f"gamma = {gamma:.4f} rad")
+    print(f"number of spokes = {spokes:g}")
     print(f"alpha = {alpha:.4f} rad")
     print(f"theta range = [{lower_angle:.4f}, {upper_angle:.4f}] rad")
 
     theta_values = np.linspace(lower_angle, upper_angle, NUM_INITIAL_ANGLES)
     theta_dot_values = np.linspace(-3.0, 3.0, NUM_INITIAL_ANGULAR_VELOCITIES)
 
-    filename = DATA_DIR / f"rimless_wheel_roa_gamma_{gamma:.3f}.csv"
+    filename = DATA_DIR / f"rimless_wheel_roa_gamma_{gamma:.3f}_N_{spokes:g}.csv"
     fieldnames = [
         "theta_index",
         "theta_dot_index",
@@ -236,7 +238,7 @@ def main():
                     "gravity": params["gravity"],
                     "length": params["length"],
                     "mass": params["mass"],
-                    "num_spokes": params["num_spokes"],
+                    "num_spokes": spokes,
                 })
 
                 simulation_number += 1
