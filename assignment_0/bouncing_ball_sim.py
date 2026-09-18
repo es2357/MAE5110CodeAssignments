@@ -1,9 +1,15 @@
+import sys
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Direct execution needs the project root to find the shared packages.
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from integrators import rk4 as integrator
 from models import bouncing_ball as model
-
 
 params = {
     "gravity": 9.81,

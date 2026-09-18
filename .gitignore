@@ -1,8 +1,129 @@
-.DS_Store
+# Python environment and bytecode
 .venv/
-.vscode/
 __pycache__/
 *.py[cod]
+
+# Python tool caches
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Local macOS and editor files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated simulation data
+*.csv
+
+# Images and rendered documents (including uppercase extensions)
+*.[pP][nN][gG]
+*.[jJ][pP][gG]
+*.[jJ][pP][eE][gG]
+*.[gG][iI][fF]
+*.[wW][eE][bB][pP]
+*.[bB][mM][pP]
+*.[tT][iI][fF]
+*.[tT][iI][fF][fF]
+*.[iI][cC][oO]
+*.[aA][vV][iI][fF]
+*.[hH][eE][iI][cC]
+*.[hH][eE][iI][fF]
+*.[sS][vV][gG]
+*.[eE][pP][sS]
+*.[pP][dD][fF]
+
+# Common binary formats; Git ignore rules match names, not file contents.
+# Video and audio
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.m4v
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.m4a
+*.aac
+
+# Archives and packaged files
+*.zip
+*.gz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.tar
+*.tgz
+*.whl
+
+# Compiled objects and executables
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.class
+*.jar
+*.bin
+
+# Binary simulation data, databases, and model checkpoints
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.mat
+*.h5
+*.hdf5
+*.parquet
+*.db
+*.sqlite
+*.sqlite3
+*.pt
+*.pth
+*.onnx
+
+# Fonts
+*.ttf
+*.otf
+*.woff
+*.woff2
+
+# Existing project exclusions
 uv.lock
 assignments_tex/
+
+# Allow only the images embedded in assignment_1/assignment_1_deliverable.md.
+!/assignment_1/assignment_1_data/floquet_gamma_0.080000_N_12.png
+!/assignment_1/assignment_1_data/floquet_gamma_0.080000_N_8.png
+!/assignment_1/assignment_1_data/floquet_gamma_0.260000_N_8.png
+!/assignment_1/assignment_1_data/floquet_gamma_0.390000_N_6.png
+!/assignment_1/assignment_1_data/rimless_wheel_energy_gamma_0.080_N_12.png
+!/assignment_1/assignment_1_data/rimless_wheel_energy_gamma_0.080_N_6.png
+!/assignment_1/assignment_1_data/rimless_wheel_energy_gamma_0.260_N_8.png
+!/assignment_1/assignment_1_data/rimless_wheel_energy_gamma_0.390_N_12.png
+!/assignment_1/assignment_1_data/rimless_wheel_energy_gamma_0.390_N_6.png
+!/assignment_1/assignment_1_data/rimless_wheel_energy_gamma_0.390_N_8.png
+!/assignment_1/assignment_1_data/rimless_wheel_energy_loss_summary.png
+!/assignment_1/assignment_1_data/rimless_wheel_incline_summary.png
+!/assignment_1/assignment_1_data/rimless_wheel_return_map_gamma_0.080_N_12.png
+!/assignment_1/assignment_1_data/rimless_wheel_return_map_gamma_0.080_N_8.png
+!/assignment_1/assignment_1_data/rimless_wheel_return_map_gamma_0.260.png
+!/assignment_1/assignment_1_data/rimless_wheel_return_map_gamma_0.390.png
+!/assignment_1/assignment_1_data/rimless_wheel_return_map_gamma_0.390_N_6.png
+!/assignment_1/assignment_1_data/rimless_wheel_roa_gamma_0.080.png
+!/assignment_1/assignment_1_data/rimless_wheel_roa_gamma_0.080_N_12.png
+!/assignment_1/assignment_1_data/rimless_wheel_roa_gamma_0.260.png
+!/assignment_1/assignment_1_data/rimless_wheel_roa_gamma_0.390_N_6.png
+!/assignment_1/assignment_1_data/rimless_wheel_roa_gamma_0.390_N_8.png
+!/assignment_1/assignment_1_data/rimless_wheel_sanity_angle.png
+!/assignment_1/assignment_1_data/rimless_wheel_sanity_angular_velocity.png
+!/assignment_1/assignment_1_data/rimless_wheel_sanity_energy.png
+!/assignment_1/assignment_1_data/rimless_wheel_sanity_phase_portrait.png
+!/assignment_1/assignment_1_data/rimless_wheel_spoke_summary.png

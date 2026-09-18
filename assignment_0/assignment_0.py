@@ -1,9 +1,17 @@
-import numpy as np
-import matplotlib.pyplot as plt
+import sys
 import timeit
+from pathlib import Path
 
-from models import pendulum as model
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Direct execution needs the project root to find the shared packages.
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from integrators import explicit_euler as integrator
+from models import pendulum as model
+
 # from integrators import rk4 as integrator
 
 # Basic simulation of the pendulum
@@ -16,7 +24,7 @@ params = {
 }
 
 
-# some set-up
+# set-up
 initial_state = np.array([np.pi / 4, 0.0])
 
 timestep = 1e-5
