@@ -102,3 +102,9 @@ assignments_tex/
 # Assignment 2 figures, numerical tables, and compiled report are reproducible.
 output/
 tmp/pdfs/
+
+# Local PDF export helpers and intermediate reports
+/assignment_2/export_report.sh
+/assignment_2/report.css
+/assignment_2/*.html
+/assignment_2/*.tex

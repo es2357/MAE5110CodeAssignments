@@ -162,7 +162,8 @@ def build_return_table(
     timestep, sim_time, angle_bounds=None, event_time_tol=1e-8,
 ):
     """
-    Test every starting speed and landing angle, and store the results
+    Test every starting speed and landing angle, and
+    stores next speeds, outcomes, and footstrike counts
     """
 
     speed_values = np.array(speed_values)
@@ -200,6 +201,7 @@ def build_return_table(
 def _nearest_speed_index(speed, speed_values):
     """
     Return the nearest speed's index, or None for invalid/out-of-range speeds
+    : find closest speed in speed_values,  “1.17 → 1.2” approximation
     """
     if len(speed_values) == 0 or not np.isfinite(speed):
         return None
@@ -236,13 +238,13 @@ def compute_step_policy(return_table):
                     if next_index is None:
                         continue
 
-                    # Add the steps still needed from the next speed.
+                    # Add the steps still needed from the next speed
                     total_steps = total_steps + minimum_steps[next_index]
 
                 elif outcome != "captured":
                     continue
 
-                # Save this angle if it gives a shorter route.
+                # Save this angle if it gives a shorter route
                 if total_steps < minimum_steps[row]:
                     minimum_steps[row] = total_steps
                     best_alpha[row] = np.nan
@@ -263,16 +265,7 @@ def compute_step_policy(return_table):
 
 def compute_max_step_policy(return_table):
     """
-    Return maximum_steps and best_alpha for each sampled speed.
-
-    maximum_steps:
-        finite number: longest route to the RoA
-        np.inf: a repeatable cycle allows arbitrarily many steps
-                before eventually reaching the RoA
-        np.nan: no route to the RoA was found
-
-    For an infinite result, best_alpha keeps the walker on a route
-    towards or around a cycle.
+    Return maximum_steps and best_alpha for each sampled speed
     """
     speed_values = return_table["speed_values"]
     alpha_values = return_table["alpha_values"]

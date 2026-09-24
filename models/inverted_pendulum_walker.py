@@ -9,24 +9,72 @@ import numpy as np
 
 
 def generate_params():
-    pass
+    """Return a dictionary of default parameters for the inverted pendulum walker."""
+    return {
+        "gravity": 9.81,  # (m/s^2)
+        "length": 1.0,  # leg length (m)
+        "mass": 1.0,  # point mass (kg)
+        "incline": 0.06,  # ground slope angle (rad)
+        "angle_of_attack": np.pi / 7,  # 1/2 * angle between stance and swing legs (rad)
+        "ankle_torque": 0.0,  # torque applied at the ankle (N m)
+    }
 
 
 def dynamics(t, state, params):
-    # TODO: implement the state derivative.
-    return np.array([0.0, 0.0])
+    theta, theta_dot = state
+    gravity = params["gravity"]
+    length = params["length"]
+    torque = params["ankle_torque"]
+    mass = params["mass"]
+
+    theta_ddot = (
+        (gravity / length) * np.sin(theta) + torque / (mass * length**2)
+    )
+
+    return np.array([theta_dot, theta_ddot])
 
 
 def event_guard(previous_state, next_state, params):
-    pass
+    """
+    Return True if the walker has crossed the impact angle between steps
+    and is moving in the positive theta direction
+    """
+    gamma = params["incline"]
+    alpha = params["angle_of_attack"]
+    impact_angle = gamma + alpha
+    previous_theta = previous_state[0]
+    next_theta, next_theta_dot = next_state
+
+    return previous_theta < impact_angle <= next_theta and next_theta_dot > 0.0
 
 
 def event_dynamics(state, params):
-    pass
+    """
+    Return the state after an impact event
+    """
+    theta, theta_dot = state
+    gamma = params["incline"]
+    alpha = params["angle_of_attack"]
+    impact_angle = gamma + alpha
+    theta_plus = impact_angle - 2 * alpha
+    theta_dot_plus = np.cos(2 * alpha) * theta_dot
+
+    return np.array([theta_plus, theta_dot_plus])
 
 
 def calculate_energy(state, params):
-    pass
+    """
+    Return the total energy of the walker at given state
+    """
+    theta, theta_dot = state
+    gravity = params["gravity"]
+    length = params["length"]
+    mass = params["mass"]
+
+    kinetic_energy = 0.5 * mass * (length * theta_dot) ** 2
+    potential_energy = mass * gravity * length * np.cos(theta)
+
+    return kinetic_energy + potential_energy
 
 
 def visualize(
