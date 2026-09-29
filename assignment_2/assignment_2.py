@@ -1,10 +1,13 @@
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation, PillowWriter
 
+from integrators import rk4 as integrator
 from models import inverted_pendulum_walker as model
+import stabilizing_upright as controller
 
 # Fixed controls for this visualization example.
 params = {
@@ -16,29 +19,41 @@ params = {
     "ankle_torque": 0.0,  # N m
 }
 
-initial_state = np.array([0.0, 3.0])
-timestep = 1e-4
-sim_time = 3.0
-desired_number_of_steps = 3
+roa_data = np.load("roa_data.npz")
+
+theta_grid = roa_data["theta_grid"]
+angular_vel_grid = roa_data["angular_vel_grid"]
+roa = roa_data["roa"]
+
+initial_state = np.array([0.3, -0.7])
+
+timestep = 1e-3
+sim_time = 10.0
 
 n_timesteps = round(sim_time / timestep) + 1
 time_traj = np.arange(n_timesteps) * timestep
 state_traj = np.zeros((2, n_timesteps))
 state_traj[:, 0] = initial_state
+
+standing_controller_active = controller.in_roa(initial_state, theta_grid, angular_vel_grid, roa)
 completed_steps = 0
 
 # Simulation loop. Replace this Euler step with your own integrator as needed.
 for step, t in enumerate(time_traj[:-1]):
     state = state_traj[:, step]
-    next_state = state + timestep * model.dynamics(t, state, params)
-
-    if model.event_guard(state, next_state, params):
-        next_state = model.event_dynamics(next_state, params)
-        completed_steps += 1
-
+    
+    if standing_controller_active:
+        params["ankle_torque"] = controller.feedback_linearization(state, params)
+    else:
+        params["ankle_torque"] = 0.0
+    
+    next_state = integrator.integrate(t, state, timestep, model.dynamics, params)
+    
+    if not standing_controller_active and controller.roa_event_guard(state, next_state, theta_grid, angular_vel_grid, roa):
+        standing_controller_active = True
+        print(f"Entered RoA at t = {t + timestep:.3f} s")
+        
     state_traj[:, step + 1] = next_state
-    if completed_steps == desired_number_of_steps:
-        break
 
 time_traj = time_traj[: step + 2]
 state_traj = state_traj[:, : step + 2]
@@ -62,7 +77,7 @@ if frame_indices[-1] != time_traj.size - 1:
 animation = FuncAnimation(
     fig, draw_frame, frames=frame_indices, interval=1000 / fps, repeat=False
 )
-output = Path("output/assignment_2")
+output = Path("output")
 output.mkdir(parents=True, exist_ok=True)
 animation.save(output / "walker.gif", writer=PillowWriter(fps=fps))
 
