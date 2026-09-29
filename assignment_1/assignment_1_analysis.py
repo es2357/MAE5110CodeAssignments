@@ -53,11 +53,11 @@ print("valid gait: omega_roll_star > " "omega_forward_threshold ->",omega_roll_s
 
 
 # RoA
-theta_grid = np.linspace(backward_guard, forward_guard, 300)
-angular_vel_grid = np.linspace(-3, 3, 300)
+theta_grid = np.linspace(backward_guard, forward_guard, 300,)
+angular_vel_grid = np.linspace(-3, 3, 300,)
 
 energy_barrier = gravity / spoke_length
-theta_cur, w_cur = np.meshgrid(theta_grid, angular_vel_grid)
+theta_cur, w_cur = np.meshgrid(theta_grid, angular_vel_grid,)
 
 theta_cur = theta_cur.copy()
 w_cur = w_cur.copy()
