@@ -1,4 +1,5 @@
-def integrate(t, state, timestep, dynamics, params):
+# def integrate(t, state, timestep, dynamics, params):
+def integrate(dynamics, t, state, timestep, params):
     k1 = dynamics(t, state, params)
 
     k2 = dynamics(
