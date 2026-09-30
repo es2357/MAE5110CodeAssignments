@@ -7,6 +7,10 @@ from algorithms import build_transition_matrix, value_iteration
 
 
 def test_value_iteration_solves_a_small_graph_in_multiple_dimensions():
+    """
+    test that value iteration finds expected values and best actions
+    for the same graph stored in different shapes
+    """
     transition_matrix = np.array([[[4, 1], [4, 4]], [[0, 4], [3, 4]]])
     reward = np.array([[[1, 0], [4, 0]], [[0, 1], [1, 5]]])
     expected_value = np.array([[2, 4], [1, 5]])
@@ -27,6 +31,10 @@ def test_value_iteration_solves_a_small_graph_in_multiple_dimensions():
 
 
 def test_discounted_self_loop_and_iteration_limit():
+    """
+    test that repeated discounted rewards give the expected value
+    and that the iteration limit stops updates as expected
+    """
     transition_matrix = np.array([[0]])
     reward = np.array([[1.0]])
 
@@ -42,6 +50,10 @@ def test_discounted_self_loop_and_iteration_limit():
 
 
 def test_transition_matrix_uses_complete_coordinates_and_flat_node_ids():
+    """
+    test that transitions use all coordinates to find the nearest
+    grid point and return its correct node number
+    """
     grid_points = np.array(
         [[[4, 0], [0, 0], [0, 4]], [[4, 4], [1, 3], [3, 2]]], dtype=float
     )
@@ -63,6 +75,10 @@ def test_transition_matrix_uses_complete_coordinates_and_flat_node_ids():
 
 
 def test_transition_matrix_distinguishes_failure_from_boundary_nodes():
+    """
+    test that failed and out-of-bounds steps go to terminal node;
+    boundary points remain valid and original grid doesn't change
+    """
     grid_points = np.array([[0.0], [1.0], [3.0]])
     original_points = grid_points.copy()
     actions = [0, 1, 2, 3]

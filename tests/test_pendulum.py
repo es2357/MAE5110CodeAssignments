@@ -49,6 +49,9 @@ def test_torque():
 
 
 def test_damping():
+    """
+    Test that damping slowed down pendulum as expected
+    """
     params = pendulum.generate_params()
     params["gravity"] = 0.0
     params["torque"] = 0.0

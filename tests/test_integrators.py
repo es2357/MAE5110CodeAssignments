@@ -7,6 +7,10 @@ import integrators
 
 
 def test_constant_derivative():
+    """
+    Test that neither integrator changes original
+    input array when calculating the result
+    """
     def dynamics(time, state, params):
         return params["velocity"]
 
@@ -22,6 +26,10 @@ def test_constant_derivative():
 
 
 def test_exponential_growth():
+    """
+    Test that simulated exponential growth
+    matches expected value after 1 sec
+    """
     def dynamics(time, state, params):
         return params["rate"] * state
 
@@ -37,6 +45,10 @@ def test_exponential_growth():
 
 
 def test_time_dependent_dynamics():
+    """
+    Test that simulated state matches expected value
+    when rate of change depends on time
+    """
     def dynamics(time, state, params):
         return np.full_like(state, params["rate"] * time)
 
