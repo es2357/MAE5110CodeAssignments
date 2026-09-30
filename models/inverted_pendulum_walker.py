@@ -55,6 +55,7 @@ def event_guard(previous_state, next_state, params):
 
     return previous_forward_guard < 0 <= next_forward_guard
 
+
 def event_dynamics(state, params):
     angle_of_attack = params["angle_of_attack"]
     theta = state[0]
