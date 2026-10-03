@@ -41,7 +41,7 @@ def find_impact_time(
 
         t_mid = 0.5 * (t_minus + t_plus)
 
-        state_mid = integrator.step(model.dynamics, t, state, t_mid, params)
+        state_mid = integrator(model.dynamics, t, state, t_mid, params)
 
         theta_mid = state_mid[0]
 
@@ -107,7 +107,7 @@ def step(
     while remaining_time > remaining_time_tol:
 
         # try integrating through all of the remaining time
-        trial_state = integrator.step(
+        trial_state = integrator(
             model.dynamics,
             current_time,
             current_state,
@@ -134,7 +134,7 @@ def step(
         )
 
         # state immediately before impact
-        state_minus = integrator.step(
+        state_minus = integrator(
             model.dynamics,
             current_time,
             current_state,

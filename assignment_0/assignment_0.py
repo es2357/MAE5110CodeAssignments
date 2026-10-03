@@ -40,7 +40,7 @@ state_traj[:, 0] = initial_state
 start_time = timeit.default_timer()
 
 for step, t in enumerate(time_traj[:-1]):
-    state_traj[:, step + 1] = integrator.step(
+    state_traj[:, step + 1] = integrator(
         model.dynamics,
         t,
         state_traj[:, step],
@@ -61,7 +61,7 @@ print(f"Integrator runtime: {elapsed_time:.6f} seconds")
 
 # simulation loop -- with integrator
 for step, t in enumerate(time_traj[:-1]):
-    state_traj[:, step + 1] = integrator.step(
+    state_traj[:, step + 1] = integrator(
         model.dynamics,
         t,
         state_traj[:, step],
