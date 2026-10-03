@@ -19,6 +19,9 @@ def generate_params():
         "ankle_torque": 0.0,  # torque applied at the ankle (N m)
     }
 
+def generate_initial_condition():
+    """Return [angle (rad), angular velocity (rad/s)]."""
+    return np.array([0.05, 0.0])
 
 def dynamics(t, state, params):
     theta, theta_dot = state

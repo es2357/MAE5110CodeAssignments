@@ -1,6 +1,9 @@
 # Python environment and bytecode
+# Python environment and bytecode
 .venv/
+*.egg-info/
 __pycache__/
+__marimo__/
 *.py[cod]
 
 # Python tool caches

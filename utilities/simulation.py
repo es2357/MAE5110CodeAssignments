@@ -26,7 +26,7 @@ def find_impact_time(
     while t_plus - t_minus > impact_time_tol:
         t_mid = 0.5 * (t_minus + t_plus)
 
-        state_mid = integrator.step(
+        state_mid = integrator(
             model.dynamics, t, state, t_mid, params
         )
         crossed = guard(state, state_mid, params)
@@ -45,7 +45,7 @@ def _step_to_impact(model, t, state, timestep, params, impact_time_tol):
     Return (state, elapsed time, impact detected), before reset
     -- move sim forward one timestep, stopping at detected impact
     """
-    next_state = integrator.step(model.dynamics, t, state, timestep, params)
+    next_state = integrator(model.dynamics, t, state, timestep, params)
 
     if not np.all(np.isfinite(next_state)):
         return next_state, timestep, False
@@ -56,7 +56,7 @@ def _step_to_impact(model, t, state, timestep, params, impact_time_tol):
         model, t, state, timestep, params,
         impact_time_tol=impact_time_tol,
     )
-    state_minus = integrator.step(model.dynamics, t, state, duration, params)
+    state_minus = integrator(model.dynamics, t, state, duration, params)
     return state_minus, duration, True
 
 

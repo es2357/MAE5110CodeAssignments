@@ -57,6 +57,11 @@ def contact_angles(params):
 
     return lower_angle, upper_angle
 
+def generate_initial_condition():
+    """Start at the post-impact angle with downhill angular velocity."""
+    params = generate_params()
+    lower_angle, _ = contact_angles(params)
+    return np.array([lower_angle, 1.0], dtype=float)
 
 def dynamics(t, state, params):
     """State derivative during continuous stance motion."""
