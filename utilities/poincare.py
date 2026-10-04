@@ -31,7 +31,7 @@ def locate_event(model, guard, time, state, duration, params, event_time_tol):
         impact_time_tol=event_time_tol,
         guard=guard,
     )
-    event_state = integrator.step(
+    event_state = integrator(
         model.dynamics, time, state, event_duration, params
     )
     return time + event_duration, event_state
