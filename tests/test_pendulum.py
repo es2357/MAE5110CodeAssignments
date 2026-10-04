@@ -51,7 +51,26 @@ def test_torque():
         expected = torque / (params["mass"] * params["length"]**2)
 
         assert np.isclose(acceleration, expected)
+    # With gravity and damping disabled, constant torque gives
+    # constant angular acceleration.
+    params["gravity"] = 0.0
+    timestep = 0.001
+    steps = 100
 
+    for torque in [-0.6, 0.6]:
+        params["torque"] = torque
+        state = np.array([0.0, 0.0])
+
+        for k in range(steps):
+            state = rk4(
+                pendulum.dynamics, k * timestep, state, timestep, params
+            )
+
+        expected_velocity = (
+            torque / (params["mass"] * params["length"]**2)
+            * steps * timestep
+        )
+        assert np.isclose(state[1], expected_velocity)
 
 def test_damping():
     params = pendulum.generate_params()
